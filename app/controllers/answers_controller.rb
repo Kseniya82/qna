@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-
+  before_action :authenticate_user!
+  
   def create
     @answer = question.answers.new(answers_params)
     if @answer.save
