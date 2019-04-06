@@ -23,4 +23,19 @@ feature 'User can register', %q{
 
     expect(page).to have_content "Password confirmation doesn't match Password"
   end
+
+  scenario 'Registered user tries to register' do
+    fill_in 'Email', with: 'good@test.com'
+    fill_in 'Password', with: '12345678'
+    fill_in 'Password confirmation', with: '12345678'
+    click_on 'Sign up'
+    click_on 'Log out'
+    visit new_user_registration_path
+    fill_in 'Email', with: 'good@test.com'
+    fill_in 'Password', with: '12345678'
+    fill_in 'Password confirmation', with: '12345678'
+    click_on 'Sign up'
+
+    expect(page).to have_content 'Email has already been taken'
+  end
 end
