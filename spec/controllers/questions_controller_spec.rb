@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  before { login(user) }
 
   describe 'GET #new' do
-    before { login(user) }
     before { get :new }
 
     it 'assigns a new Question to @question' do
@@ -17,11 +17,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    before { login(user) }
 
-    context 'with valid attributes' do
+    context 'Author create question with valid attributes' do
       it 'save a new question in database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
 
       it 'redirects to show view' do
@@ -42,8 +41,37 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+    let!(:users) { create_list(:user, 2) }
+    let!(:question) { create(:question, user_id: users.first.id ) }
+    context 'Author tried delete question' do
+      before { login(users.first) }
+
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to change(users.first.questions, :count).by(-1)
+      end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+    context ' Not author tried delete question' do
+      before { login(users.last) }
+
+      it 'deletes the question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+  end
+
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
+    let(:questions) { create_list(:question, 3, user_id: user.id) }
 
     before { get :index}
 
@@ -57,8 +85,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question) }
-    let(:answer) { create(:answer, question_id: question) }
+    let(:question) { create(:question, user_id: user.id) }
+    let(:answer) { create(:answer, question_id: question, user_id: user.id) }
 
     before { get :show, params: { id: question } }
 
@@ -73,7 +101,5 @@ RSpec.describe QuestionsController, type: :controller do
     it 'renders show view' do
       expect(response).to render_template :show
     end
-
-
   end
 end

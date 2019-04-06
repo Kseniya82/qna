@@ -1,2 +1,7 @@
-ul
-  li= answer.body
+-if answer.persisted?
+  ul
+    li= answer.body
+    == link_to 'Delete answer',
+                question_answer_path(question_id: answer.question.id, id: answer.id),
+                method: :delete,
+                data: { confirm:'You sure delete' }

@@ -2,11 +2,11 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
@@ -21,6 +21,16 @@ class QuestionsController < ApplicationController
   def show
     @question = Question.find(params[:id])
     @answer = @question.answers.new
+  end
+
+  def destroy
+    @question = Question.find(params[:id])
+    if current_user.author?(@question)
+      @question.destroy
+      redirect_to questions_path
+    else
+      redirect_to questions_path, alert: 'Access denided'
+    end
   end
 
   private

@@ -9,7 +9,6 @@ feature 'User can register', %q{
   background { visit new_user_registration_path }
 
   scenario 'Unregistered user tries to register' do
-    #тест одноразовый
     fill_in 'Email', with: 'good@test.com'
     fill_in 'Password', with: '12345678'
     fill_in 'Password confirmation', with: '12345678'

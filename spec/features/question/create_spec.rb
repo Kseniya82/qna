@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Only authenticated usermay ask question', %q{
+feature 'Only authenticated user may ask question', %q{
   In order to get answer from a community
   As an authenticated user
   I'd like to be able to ask the question
