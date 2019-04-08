@@ -25,8 +25,16 @@ feature 'Only author may delete own answer', %q{
     sign_in(users.last)
 
     visit question_path(question)
-    click_on 'Delete answer'
 
-    expect(page).to have_content "Access denided"
+    expect(page).to_not have_content 'Delete answer'
+  end
+
+  scenario 'Not authenticated user tried delete answer' do
+    visit root_path
+    click_on 'Log out'
+  
+    visit question_path(question)
+
+    expect(page).to_not have_content 'Delete answer'
   end
 end

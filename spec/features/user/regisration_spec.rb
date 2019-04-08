@@ -16,7 +16,7 @@ feature 'User can register', %q{
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 
-  scenario 'Unregistered user tries to register with eroors' do
+  scenario 'Unregistered user tries to register with errors' do
     fill_in 'Email', with: 'bad@test.com'
     fill_in 'Password', with: '123456'
     click_on 'Sign up'

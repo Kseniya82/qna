@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  def author?(content)
-    content.user == self
+  def author?(resource)
+    resource.user_id == id
   end
 end

@@ -44,12 +44,8 @@ RSpec.describe AnswersController, type: :controller do
     context 'Author tried delete question' do
       before { login(users.first) }
 
-      it 'deletes the answers from user answers' do
-        expect { delete :destroy, params: { id: answer.id, question_id: question.id } }.to change(users.first.answers, :count).by(-1)
-      end
-
-      it 'deletes the answers from parent question answers' do
-        expect { delete :destroy, params: { id: answer.id, question_id: question.id } }.to change(question.answers, :count).by(-1)
+      it 'deletes the answer from  answers' do
+        expect { delete :destroy, params: { id: answer.id, question_id: question.id } }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question show' do
