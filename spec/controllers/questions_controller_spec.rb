@@ -42,23 +42,19 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:users) { create_list(:user, 2) }
-    let!(:question) { create(:question, user_id: users.first.id ) }
+    let!(:question) { create(:question) }
+    let!(:own_question) { create(:question, user: user) }
     context 'Author tried delete question' do
-      before { login(users.first) }
-
       it 'deletes the question' do
-        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+        expect { delete :destroy, params: { id: own_question } }.to change(Question, :count).by(-1)
       end
 
       it 'redirects to index' do
-        delete :destroy, params: { id: question }
+        delete :destroy, params: { id: own_question }
         expect(response).to redirect_to questions_path
       end
     end
     context ' Not author tried delete question' do
-      before { login(users.last) }
-
       it 'deletes the question' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
@@ -71,7 +67,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3, user_id: user.id) }
+    let(:questions) { create_list(:question, 3) }
 
     before { get :index}
 
@@ -85,8 +81,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question, user_id: user.id) }
-    let(:answer) { create(:answer, question_id: question, user_id: user.id) }
+    let(:question) { create(:question) }
+    let(:answer) { create(:answer, question_id: question) }
 
     before { get :show, params: { id: question } }
 

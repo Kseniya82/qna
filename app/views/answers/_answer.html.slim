@@ -3,6 +3,6 @@
     li= answer.body
     - if current_user&.author?(answer)
       == link_to 'Delete answer',
-                  question_answer_path(question_id: answer.question.id, id: answer.id),
+                  answer_path(answer),
                   method: :delete,
                   data: { confirm:'You sure delete' }

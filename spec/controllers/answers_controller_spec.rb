@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
 
   let(:user) { create(:user) }
-  let(:question) { create(:question, user_id: user.id) }
+  let(:question) { create(:question) }
   before { login(user) }
 
   describe 'POST #create' do
@@ -38,33 +38,28 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:users) { create_list(:user, 2) }
-    let!(:question) { create(:question, user_id: users.first.id ) }
-    let!(:answer) { create(:answer, user_id: users.first.id, question_id: question.id) }
+    let!(:answer) { create(:answer) }
+    let!(:own_answer) { create(:answer, user: user)}
     context 'Author tried delete question' do
-      before { login(users.first) }
-
       it 'deletes the answer from  answers' do
-        expect { delete :destroy, params: { id: answer.id, question_id: question.id } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: own_answer} }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question show' do
-        delete :destroy, params:  { id: answer.id, question_id: question.id }
-        expect(response).to redirect_to question_path(answer.question)
+        delete :destroy, params:  { id: own_answer }
+        expect(response).to redirect_to question_path(own_answer.question)
       end
     end
-    context ' Not author tried delete question' do
-      before { login(users.last) }
 
+    context ' Not author tried delete question' do
       it 'deletes the question' do
-        expect { delete :destroy, params:  { id: answer.id, question_id: question.id } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
       it 'redirects to index' do
-        delete :destroy, params:  { id: answer.id, question_id: question.id }
+        delete :destroy, params: { id: answer }
         expect(response).to redirect_to question_path(answer.question)
       end
     end
   end
-
 end
