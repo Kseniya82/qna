@@ -24,7 +24,7 @@ feature 'Only author may delete own question', %q{
     sign_in(users.last)
 
     visit question_path(question)
-    expect(page).to_not have_content "Delete question"
+    expect(page).to_not have_link "Delete question"
   end
 
   scenario 'Not authenticated user tried delete question' do
@@ -32,6 +32,6 @@ feature 'Only author may delete own question', %q{
     click_on 'Log out'
 
     visit question_path(question)
-    expect(page).to_not have_content "Delete question"
+    expect(page).to_not have_link "Delete question"
   end
 end
