@@ -35,8 +35,8 @@ feature 'Only authenticated user may ask question', %q{
 
   scenario 'Unauthenticated user tries to ask a question' do
     visit questions_path
-    click_on 'Log out'
     click_on 'Ask question'
+
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end

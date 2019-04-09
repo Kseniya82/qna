@@ -7,11 +7,10 @@ feature 'Only author may delete own question', %q{
 } do
 
   given(:users) { create_list(:user, 2) }
-  background { sign_in(users.first) }
-  given!(:question) { create(:question, user_id: users.first.id) }
+  given!(:question) { create(:question, user: users.first) }
 
   scenario 'Author delete question' do
-
+    sign_in(users.first)
     visit question_path(question)
     click_on 'Delete question'
 
@@ -19,19 +18,15 @@ feature 'Only author may delete own question', %q{
   end
 
   scenario 'Not author tried delete question' do
-    visit root_path
-    click_on 'Log out'
     sign_in(users.last)
-
     visit question_path(question)
+
     expect(page).to_not have_link "Delete question"
   end
 
   scenario 'Not authenticated user tried delete question' do
-    visit root_path
-    click_on 'Log out'
-
     visit question_path(question)
+
     expect(page).to_not have_link "Delete question"
   end
 end

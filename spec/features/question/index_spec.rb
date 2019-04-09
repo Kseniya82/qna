@@ -5,7 +5,7 @@ feature 'User can show list of question', %q{
   As an any user
   I'd like to be able to look the list of questions
 } do
-  given(:questions) { create_list(:question, 3, user_id: 1) }
+  given(:questions) { create_list(:question, 3) }
   scenario 'User show list of questions' do
     questions = Question.all
 

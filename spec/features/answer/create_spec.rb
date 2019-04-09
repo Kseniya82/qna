@@ -7,7 +7,7 @@ feature 'Only authenticated user can create new answer on page question', %q{
 } do
 
   given(:user) {create(:user)}
-  given(:question) { create(:question, user_id: user.id) }
+  given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
     background do
@@ -32,8 +32,6 @@ feature 'Only authenticated user can create new answer on page question', %q{
   end
 
   scenario 'Unauthenticated user tries to add a answer' do
-    visit root_path
-    click_on 'Log out'
     visit question_path(question)
     click_on 'Add answer'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
