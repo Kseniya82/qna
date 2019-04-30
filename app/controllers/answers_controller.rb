@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @answer = question.answers.new(answers_params)
+    @answer = question.answers.new(answer_params)
     @answer.user = current_user
     if @answer.save
       redirect_to question_path(@answer.question), notice: 'Your answer successfully created.'
@@ -21,13 +21,19 @@ class AnswersController < ApplicationController
     end
   end
 
+  def update
+    @answer = Answer.find(params[:id])
+    @answer.update(answer_params)
+    @question = @answer.question
+  end
+
   private
 
   def question
     @question ||= Question.find(params[:question_id])
   end
 
-  def answers_params
+  def answer_params
     params.require(:answer).permit(:body)
   end
 end
