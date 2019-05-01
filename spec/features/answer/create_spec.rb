@@ -9,7 +9,7 @@ feature 'Only authenticated user can create new answer on page question', %q{
   given(:user) {create(:user)}
   given(:question) { create(:question, user: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     background do
       sign_in(user)
     end
@@ -19,8 +19,10 @@ feature 'Only authenticated user can create new answer on page question', %q{
       fill_in 'answer_body', with: 'Answer body'
       click_on 'Add answer'
 
-      expect(page).to have_content 'Your answer successfully created.'
-      expect(page).to have_content 'Answer body'
+      expect(current_path).to eq question_path(question)
+      within '.answers' do
+        expect(page).to have_content 'Answer body'
+      end
     end
 
     scenario 'write answer with errors' do
