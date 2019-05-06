@@ -36,6 +36,7 @@ feature 'Only authenticated user can create new answer on page question', %q{
   scenario 'Unauthenticated user tries to add a answer' do
     visit question_path(question)
     click_on 'Add answer'
+
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
