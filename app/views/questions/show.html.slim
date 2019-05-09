@@ -1,13 +1,21 @@
+.question-errors
+  = render 'shared/errors', resource: @question
+
 .question
-  h1= @question.title
-  p= @question.body
+ = render @question
+
+.question-link
+  = form_with model: @question, class: 'hidden', html: { id: "edit-question" } do |f|
+    = f.label :body, 'Edit question'
+    = f.text_area :body
+    = f.submit 'Save'
+
   - if current_user&.author?(@question)
     p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: @question.id }
     p= link_to 'Delete question',
                  question_path(@question),
                  method: :delete,
                  data: { confirm:'You sure delete' }
-
 
 .answer-errors
   = render 'shared/errors', resource: @answer

@@ -82,7 +82,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #show' do
     let(:question) { create(:question) }
-    let(:answer) { create(:answer, question_id: question) }
+    let(:answer) { create(:answer, question: question) }
 
     before { get :show, params: { id: question } }
 
@@ -90,12 +90,50 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'assigns a new Answers to @answer' do
+    it 'assigns a new answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
     it 'renders show view' do
       expect(response).to render_template :show
+    end
+  end
+
+  describe 'PATCH #update' do
+    let!(:question) { create(:question) }
+    let!(:own_question) { create(:question, user: user) }
+
+    context 'with valid attributes' do
+      it 'changes question attributes' do
+        patch :update, params: { id: own_question, question: { body: 'new body' } }, format: :js
+        own_question.reload
+        expect(own_question.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: own_question, question: { body: 'new body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      it 'does not change question attributes' do
+        expect do
+          patch :update, params: { id: own_question, question: attributes_for(:question, :invalid) }, format: :js
+        end.to_not change(own_question, :body)
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: own_question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+    context 'Not author tried update question' do
+      it 'does not change question attributes' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        end.to_not change(question, :body)
+      end
     end
   end
 end
