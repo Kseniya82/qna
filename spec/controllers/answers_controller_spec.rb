@@ -42,18 +42,18 @@ RSpec.describe AnswersController, type: :controller do
     let!(:own_answer) { create(:answer, user: user)}
     context 'Author tried delete question' do
       it 'deletes the answer from  answers' do
-        expect { delete :destroy, params: { id: own_answer} }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: own_answer}, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to question show' do
-        delete :destroy, params:  { id: own_answer }
-        expect(response).to redirect_to question_path(own_answer.question)
+      it 'renders destroy view' do
+        delete :destroy, params:  { id: own_answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
     context ' Not author tried delete answer' do
       it 'no deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
       it 'redirects to question show' do

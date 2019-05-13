@@ -10,7 +10,7 @@ feature 'Only author may delete own answer', %q{
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, user: users.first, question: question) }
 
-  scenario 'Author delete answer' do
+  scenario 'Author delete answer', js: true do
     sign_in(users.first)
     visit question_path(question)
     click_on 'Delete answer'
@@ -18,14 +18,14 @@ feature 'Only author may delete own answer', %q{
     expect(page).to_not have_content answer.body
   end
 
-  scenario 'Not author tried delete answer' do
+  scenario 'Not author tried delete answer', js: true do
     sign_in(users.last)
     visit question_path(question)
 
     expect(page).to_not have_content 'Delete answer'
   end
 
-  scenario 'Not authenticated user tried delete answer' do
+  scenario 'Not authenticated user tried delete answer', js: true do
     visit question_path(question)
 
     expect(page).to_not have_content 'Delete answer'
