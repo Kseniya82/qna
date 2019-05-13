@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_answer, only: %i[update destroy]
 
   def create
     @answer = question.answers.new(answer_params)
@@ -8,17 +9,15 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer = Answer.find(params[:id])
-    if current_user.author?(@answer)
-      @answer.destroy
-      redirect_to question_path(@answer.question)
-    else
-      redirect_to question_path(@answer.question), alert: 'Access denided'
+    unless current_user.author?(@answer)
+      return redirect_to question_path(@answer.question), alert: 'Access denided'
     end
+
+    @answer.destroy
   end
 
   def update
-    @answer = Answer.find(params[:id])
+
     @answer.update(answer_params)
     @question = @answer.question
   end
@@ -27,6 +26,10 @@ class AnswersController < ApplicationController
 
   def question
     @question ||= Question.find(params[:question_id])
+  end
+
+  def set_answer
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params
