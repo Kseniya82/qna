@@ -100,4 +100,29 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #best' do
+    let!(:own_question) { create :question, user: user }
+    let!(:answer) { create :answer, question: own_question }
+    let(:other_answer) { create :answer }
+    context 'Author of question mark answer as best' do
+      it 'do attribute best of answers true' do
+        patch :best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer.best).to be_truthy
+      end
+      it 'renders best view' do
+        patch :best, params: { id: answer }, format: :js
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'Not author of question tried mark answer as best' do
+      it 'do not attribute best of answers true' do
+        patch :best, params: { id: other_answer }, format: :js
+        answer.reload
+        expect(answer.best).to be_falsey
+      end
+    end
+  end
 end

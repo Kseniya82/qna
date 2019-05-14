@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: %i[update destroy]
+  before_action :set_answer, only: %i[update destroy best]
 
   def create
     @answer = question.answers.new(answer_params)
@@ -17,9 +17,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-
     @answer.update(answer_params)
     @question = @answer.question
+  end
+
+  def best
+    @question = @answer.question
+    unless current_user.author?(@question)
+      return redirect_to question_path(@question), alert: 'Access denided'
+    end
+    
+    @answer.best!
   end
 
   private
