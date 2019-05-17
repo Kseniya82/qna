@@ -17,6 +17,10 @@ class AnswersController < ApplicationController
   end
 
   def update
+    unless current_user.author?(@answer)
+      return redirect_to question_path(@answer.question), alert: 'Access denided'
+    end
+
     @answer.update(answer_params)
     @question = @answer.question
   end
@@ -26,7 +30,7 @@ class AnswersController < ApplicationController
     unless current_user.author?(@question)
       return redirect_to question_path(@question), alert: 'Access denided'
     end
-    
+
     @answer.best!
   end
 
