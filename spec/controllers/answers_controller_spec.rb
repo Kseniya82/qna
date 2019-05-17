@@ -95,8 +95,12 @@ RSpec.describe AnswersController, type: :controller do
     context 'Not author tried update answer' do
       it 'does not change answer attributes' do
         expect do
-          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+          patch :update, params: { id: answer }, format: :js
         end.to_not change(answer, :body)
+      end
+      it 'redirects to question show' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
