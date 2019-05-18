@@ -32,7 +32,7 @@ feature 'Author question can mark best one answer for own question', %q{
     end
 
     scenario 'Author of question can mark other answer as best if question alredy have best answer' do
-      answers.first.best = true
+      answers.first.update(best: true)
       visit question_path(own_question)
       first('.mark-as-best').click
 
