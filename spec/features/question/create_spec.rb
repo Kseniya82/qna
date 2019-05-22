@@ -32,7 +32,7 @@ feature 'Only authenticated user may ask question', %q{
       expect(page).to have_content "Title can't be blank"
     end
 
-    scenario 'asks a question with attached file' do
+    scenario 'asks a question with attached files' do
      fill_in 'Title', with: 'Test question'
      fill_in 'Body', with: 'text text text'
 
