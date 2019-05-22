@@ -13,3 +13,7 @@ div id= "answer-#{answer.id}"
       = f.label :body, 'Your answer'
       = f.text_area :body
       = f.submit 'Save'
+
+  - if answer.files.attached?
+    - answer.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)

@@ -1,8 +1,10 @@
 class Answer < ApplicationRecord
   default_scope { order(best: :desc) }
-  
+
   belongs_to :question
   belongs_to :user
+
+  has_many_attached :files
 
   validates :body, presence: true
 
