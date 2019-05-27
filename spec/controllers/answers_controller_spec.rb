@@ -40,7 +40,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
     let!(:answer) { create(:answer) }
     let!(:own_answer) { create(:answer, user: user)}
-    context 'Author tried delete question' do
+    context 'Author tried delete answer' do
       it 'deletes the answer from  answers' do
         expect { delete :destroy, params: { id: own_answer}, format: :js }.to change(Answer, :count).by(-1)
       end
