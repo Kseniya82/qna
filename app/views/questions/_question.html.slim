@@ -10,3 +10,9 @@ p= question.body
                      file_path(file),
                      method: :delete,
                      remote: true
+
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
