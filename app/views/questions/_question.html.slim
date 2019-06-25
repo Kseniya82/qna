@@ -1,6 +1,8 @@
 h1= question.title
 p= question.body
 
+= render 'shared/links', resource: question
+
 - if question.files.attached?
   - question.files.each do |file|
     div id=file.id class='file'
@@ -10,9 +12,3 @@ p= question.body
                      file_path(file),
                      method: :delete,
                      remote: true
-
-.links
-  p Links:
-  ul
-    - @question.links.each do |link|
-      li= link_to link.name, link.url

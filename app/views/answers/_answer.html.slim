@@ -1,11 +1,8 @@
 div id= "answer-#{answer.id}"
   -if answer.persisted?
     p= answer.body
-    p Links:
-    ul
-      - answer.links.each do |link|
-        li= link_to link.name, link.url
-
+    = render 'shared/links', resource: answer
+    
     - if current_user&.author?(answer)
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       = link_to 'Delete answer',answer, method: :delete, remote: true
