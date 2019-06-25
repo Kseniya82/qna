@@ -1,0 +1,10 @@
+.links
+  p Links:
+  ul
+    - resource.links.each do |link|
+      - if link.gist_url?
+        - GistService.new(link).content.each do |gist|
+          em= gist[:file_name]
+          pre= gist[:file_content]
+      - else
+        li= link_to link.name, link.url

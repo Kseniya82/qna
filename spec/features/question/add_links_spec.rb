@@ -9,7 +9,7 @@ feature 'User can add links to question', %q{
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/Kseniya82/a84079fda58dc44e8a8165063e3715a3' }
   given(:google_url) { 'https://google.com' }
-  given (:invalid_url) {'33.ru'}
+  given(:invalid_url) {'33.ru'}
 
   scenario 'User adds links when asks question', js: true do
     sign_in(user)
@@ -30,7 +30,7 @@ feature 'User can add links to question', %q{
 
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_content 'test.txt'
     expect(page).to have_link 'google', href: google_url
   end
 
