@@ -20,6 +20,7 @@ RSpec.describe Answer, type: :model do
   it 'mark answer as best' do
     answer.best!
     expect(answer).to be_best
+    expect(answer.user.awards.last).to eq answer.question.award
   end
 
   it 'Best answer may be only one' do
