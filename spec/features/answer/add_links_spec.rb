@@ -11,10 +11,13 @@ feature 'User can add links to answer', %q{
   given(:gist_url) { 'https://gist.github.com/Kseniya82/a84079fda58dc44e8a8165063e3715a3' }
   given(:google_url) { 'https://google.com' }
   given(:invalid_url) { '33.ru' }
+  given!(:answers) { create_list(:answer, 3, question: question, user: user) }
 
-  scenario 'User adds links when add answer', js: true do
+  background do
     sign_in(user)
     visit question_path(question)
+  end
+  scenario 'User adds links when add answer', js: true do
 
     fill_in 'Your answer', with: 'My answer'
 
@@ -36,8 +39,6 @@ feature 'User can add links to answer', %q{
   end
 
   scenario 'User adds links with invalid url', js: true do
-    sign_in(user)
-    visit question_path(question)
 
     click_on 'add link'
 
@@ -47,5 +48,22 @@ feature 'User can add links to answer', %q{
     click_on 'Add answer'
 
     expect(page).to have_content 'Links url is not a valid URL'
+  end
+
+  scenario 'edits a answer with adds link', js: true do
+    within '.answers' do
+      first(:link, 'Edit').click
+      first(:link, 'add link').click
+
+      new_link_nested_form = all('.nested-fields').last
+      within(new_link_nested_form) do
+        fill_in 'Link name', with: 'google'
+        fill_in 'Url', with: google_url
+      end
+
+      click_on 'Save'
+
+      expect(page).to have_link 'google', href: google_url
+    end
   end
 end

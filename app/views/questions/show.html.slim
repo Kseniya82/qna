@@ -8,6 +8,10 @@
   = form_with model: @question, class: 'hidden', html: { id: "edit-question" } do |f|
     = f.label :body, 'Edit question'
     = f.text_area :body
+    .edit-question-links
+      = f.fields_for :links do |l|
+        = render 'shared/link_fields', f: l
+      = link_to_add_association 'add link', f, :links, partial: 'shared/link_fields'
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
     = f.submit 'Save'
