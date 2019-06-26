@@ -10,6 +10,7 @@ feature 'User can add links to question', %q{
   given(:gist_url) { 'https://gist.github.com/Kseniya82/a84079fda58dc44e8a8165063e3715a3' }
   given(:google_url) { 'https://google.com' }
   given(:invalid_url) {'33.ru'}
+  given(:question) { create(:question, user: user) }
 
   scenario 'User adds links when asks question', js: true do
     sign_in(user)
@@ -46,5 +47,18 @@ feature 'User can add links to question', %q{
     click_on 'Ask'
 
     expect(page).to have_content 'Links url is not a valid URL'
+  end
+
+  scenario 'edits a question with adds link', js: true do
+    sign_in(user)
+    visit question_path(question)
+    within '.question-link' do
+      click_on 'Edit'
+      click_on 'add link'
+      fill_in 'Link name', with: 'google'
+      fill_in 'Url', with: google_url
+      click_on 'Save'
+    end
+    expect(page).to have_link 'google', href: google_url
   end
 end
