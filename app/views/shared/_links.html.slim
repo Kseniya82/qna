@@ -2,9 +2,15 @@
   p Links:
   ul
     - resource.links.each do |link|
-      - if link.gist_url?
-        - GistService.new(link).content.each do |gist|
-          em= gist[:file_name]
-          pre= gist[:file_content]
-      - else
-        li= link_to link.name, link.url
+      div id=link.id class='link'
+        - if link.gist_url?
+          - GistService.new(link).content.each do |gist|
+            em= gist[:file_name]
+            pre= gist[:file_content]
+        - else
+          li= link_to link.name, link.url
+        - if current_user&.author?(resource)
+          =link_to 'Delete link',
+                       link_path(link),
+                       method: :delete,
+                       remote: true
