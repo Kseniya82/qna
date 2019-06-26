@@ -1,0 +1,9 @@
+  p
+    'Question title'
+    = award.question.title
+  p
+    'Award Title'
+    = award.title
+  p
+    - if award.image.attached?
+      = image_tag url_for(award.image), size: "100x100"
