@@ -6,7 +6,7 @@ FactoryBot.define do
   factory :question do
     title
     body { "MyText" }
-    user 
+    user
 
     trait :invalid do
       title { nil }
