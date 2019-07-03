@@ -16,6 +16,13 @@ feature 'Authenticated user may voted for question', %q{
     expect(page).to_not have_link "Vote down"
   end
 
+  scenario 'author cannot voted for own questio' do
+    sign_in(question.user)
+    visit question_path(question)
+    expect(page).to_not have_link "Vote up"
+    expect(page).to_not have_link "Vote down"
+  end
+
   describe 'authenticated user' do
     background do
       sign_in(user)
@@ -31,6 +38,21 @@ feature 'Authenticated user may voted for question', %q{
       click_on 'Vote down'
 
       expect(page).to have_content '-1'
+    end
+
+    scenario 'cannot voted twice' do
+      click_on 'Vote up'
+      expect(page).to_not have_link "Vote up"
+      expect(page).to_not have_link "Vote down"
+    end
+
+    scenario 'may delete own vote' do
+      click_on 'Vote up'
+      click_on 'Delete'
+
+      expect(page).to have_link "Vote up"
+      expect(page).to have_link "Vote down"
+      expect(page).to have_content '0'
     end
   end
 end

@@ -13,11 +13,10 @@
                            data: { type: :json }
 
 
-  .delete
+  .delete.hidden
     = link_to 'Delete', polymorphic_path(resource, action: :vote_destroy),
                         method: :delete,
                         remote: true,
-                        class: 'hidden',
                         data: { type: :json }
 .rating
   = resource.rating

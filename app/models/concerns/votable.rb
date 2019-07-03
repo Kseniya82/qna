@@ -8,5 +8,4 @@ module Votable
   def rating
     votes.sum(:value)
   end
-
 end
