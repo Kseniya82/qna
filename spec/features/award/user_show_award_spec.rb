@@ -24,8 +24,10 @@ feature 'User can see the list of own best answer awards', %q{
     fill_in 'answer_body', with: 'Answer body'
     click_on 'Add answer'
     click_on 'Mark as best'
+    wait_for_ajax
 
     visit awards_path
+
     expect(page).to have_content 'Test question'
     expect(page).to have_content 'test award'
   end

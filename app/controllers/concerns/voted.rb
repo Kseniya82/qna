@@ -2,10 +2,10 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_votable, only: %i[vote_up vote_down]
+    before_action :set_votable, only: %i[vote_up vote_down vote_destroy]
     before_action :set_vote, only: %i[vote_up vote_down vote_destroy]
 
-    #rescue_from ActiveRecord::RecordInvalid, with: :render_errors
+    rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   end
 
   def vote_up
@@ -26,6 +26,7 @@ module Voted
 
   def vote_destroy
     @vote.destroy if current_user.author?(@vote)
+    render_rating
   end
 
   private
@@ -45,10 +46,10 @@ module Voted
   def render_rating
     respond_to do |format|
       format.json do
-        render json: {
-          resource: @votable.class.name.downcase,
-          resourceId: @votable.id,
-          rating: @vote.votable.rating }
+        render json:
+          { resource: @votable.class.name.downcase,
+            resourceId: @votable.id,
+            rating: @vote.votable.rating }
       end
     end
   end

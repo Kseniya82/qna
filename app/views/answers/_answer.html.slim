@@ -1,6 +1,11 @@
 div id= "answer-#{answer.id}"
   -if answer.persisted?
     p= answer.body
+    . class="answer-#{answer.id}"
+      .vote
+        - if user_signed_in?
+          = render partial: 'shared/vote', locals: { resource: answer }
+
     = render 'shared/links', resource: answer
 
     - if current_user&.author?(answer)

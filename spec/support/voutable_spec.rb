@@ -7,9 +7,7 @@ shared_examples_for 'votable' do
   let(:users) { create_list :user, 3 }
 
   it 'calculate rating' do
-
     users.each { |u| create(:vote, votable: model, user: u) }
-
     expect(model.rating).to eq users.count
   end
 end
