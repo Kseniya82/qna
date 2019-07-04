@@ -4,25 +4,24 @@ $(document).on('turbolinks:load', function(){
     var resourceName = xhr['resource'];
     var resourceId = xhr['resourceId'];
     var rating = xhr['rating'];
+    var vote = '.' + resourceName + '-' + resourceId + ' .vote'
 
-    
-    if ($('.' + resourceName + '-' + resourceId + ' .vote .delete').hasClass('hidden')) {
-
-      $('.' + resourceName + '-' + resourceId + ' .vote .rating').html(rating);
-      $('.' + resourceName + '-' + resourceId + ' .vote .up').hide;
-      $('.' + resourceName + '-' + resourceId + ' .vote .up').addClass('hidden');
-      $('.' + resourceName + '-' + resourceId + ' .vote .down').hide;
-      $('.' + resourceName + '-' + resourceId + ' .vote .down').addClass('hidden');
-      $('.' + resourceName + '-' + resourceId + ' .vote .delete').show;
-      $('.' + resourceName + '-' + resourceId + ' .vote .delete').removeClass('hidden');
+    if ($(vote + ' .delete').hasClass('hidden')) {
+      $(vote + ' .rating').html(rating);
+      $(vote + ' .up').hide;
+      $(vote + ' .up').addClass('hidden');
+      $(vote + ' .down').hide;
+      $(vote + ' .down').addClass('hidden');
+      $(vote + ' .delete').show;
+      $(vote + ' .delete').removeClass('hidden');
     }  else {
-      $('.' + resourceName + '-' + resourceId + ' .vote .rating').html(rating);
-      $('.' + resourceName + '-' + resourceId + ' .vote .up').show;
-      $('.' + resourceName + '-' + resourceId + ' .vote .up').removeClass('hidden');
-      $('.' + resourceName + '-' + resourceId + ' .vote .down').show;
-      $('.' + resourceName + '-' + resourceId + ' .vote .down').removeClass('hidden');
-      $('.' + resourceName + '-' + resourceId + ' .vote .delete').hide;
-      $('.' + resourceName + '-' + resourceId + ' .vote .delete').addClass('hidden');
+      $(vote + ' .rating').html(rating);
+      $(vote + ' .up').show;
+      $(vote + ' .up').removeClass('hidden');
+      $(vote + ' .down').show;
+      $(vote + ' .down').removeClass('hidden');
+      $(vote + ' .delete').hide;
+      $(vote + ' .delete').addClass('hidden');
     }
 
   })
@@ -30,7 +29,7 @@ $(document).on('turbolinks:load', function(){
       var errors = e.detail[0];
 
       $.each(errors, function(index, value) {
-        $('.answer-errors').append('<p>' + value + '</p>');
+        $('#flash').append('<p class="alert">' + value[0].message +'</p>');
       })
 
     })
