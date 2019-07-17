@@ -6,7 +6,8 @@ feature 'Only authenticated user can create new answer on page question', %q{
   I'd like to be able to write the answer on page question
 } do
 
-  given(:user) {create(:user)}
+  given(:user) { create(:user) }
+  given(:other_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user', js: true do
@@ -49,5 +50,29 @@ feature 'Only authenticated user can create new answer on page question', %q{
     click_on 'Add answer'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
+
+  describe "mulitple sessions", js: true do
+    scenario "question appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('other user') do
+        sign_in(other_user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'answer_body', with: 'Answer body'
+        click_on 'Add answer'
+        expect(page).to have_content 'Answer body'
+      end
+
+      Capybara.using_session('other user') do
+        expect(page).to have_content 'Answer body'
+      end
+    end
   end
 end

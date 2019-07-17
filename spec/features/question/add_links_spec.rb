@@ -59,6 +59,7 @@ feature 'User can add links to question', %q{
       fill_in 'Url', with: google_url
       click_on 'Save'
     end
+    wait_for_ajax
     expect(page).to have_link 'google', href: google_url
   end
 end
