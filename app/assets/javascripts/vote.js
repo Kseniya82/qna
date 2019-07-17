@@ -4,24 +4,23 @@ $(document).on('turbolinks:load', function(){
     var resourceName = xhr['resource'];
     var resourceId = xhr['resourceId'];
     var rating = xhr['rating'];
-    var vote = '.' + resourceName + '-' + resourceId + ' .vote'
-
-    if ($(vote + ' .delete').hasClass('hidden')) {
-      $(vote + ' .rating').html(rating);
-      $(vote + ' .up').hide;
-      $(vote + ' .up').addClass('hidden');
-      $(vote + ' .down').hide;
-      $(vote + ' .down').addClass('hidden');
-      $(vote + ' .delete').show;
-      $(vote + ' .delete').removeClass('hidden');
+    
+    if ($(this).find('.delete').hasClass('hidden')) {
+      $(this).find('.rating').html(rating);
+      $(this).find('.up').hide;
+      $(this).find('.up').addClass('hidden');
+      $(this).find('.down').hide;
+      $(this).find('.down').addClass('hidden');
+      $(this).find('.delete').show;
+      $(this).find('.delete').removeClass('hidden');
     }  else {
-      $(vote + ' .rating').html(rating);
-      $(vote + ' .up').show;
-      $(vote + ' .up').removeClass('hidden');
-      $(vote + ' .down').show;
-      $(vote + ' .down').removeClass('hidden');
-      $(vote + ' .delete').hide;
-      $(vote + ' .delete').addClass('hidden');
+      $(this).find('.rating').html(rating);
+      $(this).find('.up').show;
+      $(this).find('.up').removeClass('hidden');
+      $(this).find('.down').show;
+      $(this).find('.down').removeClass('hidden');
+      $(this).find('.delete').hide;
+      $(this).find('.delete').addClass('hidden');
     }
 
   })

@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: %i[show update destroy]
+  after_action :publish_question, only: %i[create]
 
   def new
     @question = current_user.questions.new
@@ -54,6 +55,17 @@ class QuestionsController < ApplicationController
       files: [],
       award_attributes: [:title, :image],
       links_attributes: [:name, :url])
+  end
 
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: @question }
+      )
+    )
   end
 end

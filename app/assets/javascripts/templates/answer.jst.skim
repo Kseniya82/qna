@@ -1,0 +1,25 @@
+div class="answer-#{@answer.id}"
+  - if gon.user_id?
+    p = @answer.body
+    .vote
+      .up
+        a data-remote='true' data-type='json' data-method='post' href="/answers/#{@answer.id}/vote_up" Vote up
+      .down
+        a data-remote='true' data-type='json'data-method='post' href="/answers/#{@answer.id}/vote_down" Vote down
+      .delete.hidden
+        a data-remote='true' data-type='json' data-method='delete' href="/answers/#{@answer.id}/vote_destroy" Delete
+      p.rating  0
+
+  - if @files.length
+    .links
+      p Links:
+      ul
+        - for link in @links
+          li
+             a href="#{link.url}" #{link.name}
+  - if @files.length
+    .files
+      p Files:
+      - for file in @files
+        p
+          a href="#{file.url}" #{file.name}
