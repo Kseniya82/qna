@@ -35,3 +35,7 @@ div id= "answer-#{answer.id}"
                        file_path(file),
                        method: :delete,
                        remote: true
+
+-if answer.persisted?
+  .answer-comments
+    = render 'comments/comments_block', resource: answer

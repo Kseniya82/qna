@@ -57,7 +57,6 @@ class AnswersController < ApplicationController
 
   def links_data
     @answer.links.each_with_object([]) do |link, links|
-
       if link.gist_url?
         GistService.new(link).content.each do |gist|
           links << { name: gist[:file_name], url: gist[:file_content] }
