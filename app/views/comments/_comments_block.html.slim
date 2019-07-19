@@ -1,0 +1,11 @@
+. class="comment-#{resource.class.name.downcase}-#{resource.id}"
+  - if resource.comments.present?
+       h6>
+         'Comments:
+       = render resource.comments
+  .new-comment
+    - if user_signed_in?
+      = form_with model: [resource, Comment.new] do |f|
+        = f.label :body
+        = f.text_area :body
+        = f.submit 'Create comment'

@@ -17,3 +17,5 @@ p= @question.body
                      file_path(file),
                      method: :delete,
                      remote: true
+.question-comments
+  = render 'comments/comments_block', resource: @question
