@@ -8,7 +8,7 @@ feature 'User can add comment to question/answer', %q{
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, user: user, question: question) }
 
-  context 'multiple sessions' do
+  context 'multiple sessions', js: true do
     context 'question' do
       scenario 'comment appears on another user\'s page' do
         Capybara.using_session('user') do
@@ -24,6 +24,8 @@ feature 'User can add comment to question/answer', %q{
           within '.question-comments' do
             fill_in 'Body', with: 'text text text'
             click_on 'Create comment'
+          
+            wait_for_ajax
           end
         end
 
@@ -47,6 +49,8 @@ feature 'User can add comment to question/answer', %q{
           within '.answer-comments' do
             fill_in 'Body', with: 'text text text'
             click_on 'Create comment'
+            wait_for_ajax
+            expect(page).to have_content 'text text text'
           end
         end
 
