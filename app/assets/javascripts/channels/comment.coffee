@@ -5,7 +5,7 @@ App.comment = App.cable.subscriptions.create "CommentChannel",
   disconnected: ->
     @perform 'unfollow'
   received: (data) ->
-    commentElement = $('comment-'+ data.resource + '-' + data.resource_id)
+    commentElement = $('.comment-'+ data.resource + '-' + data.resource_id)
     commentElement.append JST['templates/comment'](
       id: data.id
       body: data.body
