@@ -54,7 +54,7 @@ class QuestionsController < ApplicationController
     params.require(:question).permit(:title, :body,
       files: [],
       award_attributes: [:title, :image],
-      links_attributes: [:name, :url])
+      links_attributes: [:name, :url, :_destroy, :id])
   end
 
   def publish_question

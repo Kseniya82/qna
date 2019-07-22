@@ -30,7 +30,7 @@ class CommentsController < ApplicationController
   def publish_comment
     return if @comment.errors.present?
 
-    ActionCable.server.broadcast "question/#{question_id}/comments", comment_json_data
+    ActionCable.server.broadcast "questions/#{question_id}/comments", comment_json_data
   end
 
   def question_id
