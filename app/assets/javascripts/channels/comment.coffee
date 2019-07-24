@@ -1,6 +1,6 @@
 App.comment = App.cable.subscriptions.create "CommentChannel",
  connected: ->
-    questionId = $('h1').data('question-id')
+    questionId = $('#question').data('question-id')
     @perform 'follow', question_id: questionId
   disconnected: ->
     @perform 'unfollow'

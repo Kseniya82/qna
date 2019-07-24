@@ -1,6 +1,6 @@
 App.answer = App.cable.subscriptions.create "AnswerChannel",
  connected: ->
-    questionId = $('h1').data('question-id')
+    questionId = $('#question').data('question-id')
     @perform 'follow', question_id: questionId
   disconnected: ->
     @perform 'unfollow'
