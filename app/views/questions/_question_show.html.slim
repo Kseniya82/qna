@@ -1,5 +1,5 @@
-h1 data-question-id=@question.id
-  = @question.title
+#question data-question-id=@question.id
+h1= @question.title
 p= @question.body
 . class="question-#{@question.id}"
   .vote
