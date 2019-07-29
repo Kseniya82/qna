@@ -36,6 +36,7 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
   config.include WaitForAjax, type: :feature
+  config.include OmniauthMacros, type: :feature
 
   Capybara.javascript_driver = :selenium_chrome_headless
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -69,6 +70,8 @@ RSpec.configure do |config|
     FileUtils.rm_rf("#{Rails.root}/tmp/storage")
   end
   
+  OmniAuth.config.test_mode = true
+
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
       with.test_framework :rspec
