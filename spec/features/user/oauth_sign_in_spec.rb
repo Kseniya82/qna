@@ -24,5 +24,20 @@ feature 'User can sign in via OAuth providers:', %q{
     end
   end
 
+  context 'MailRu account' do
+    scenario 'with correct credentials' do
+      mock_auth_mailru
+      click_on 'Sign in with MailRu'
+
+      expect(page).to have_content 'Successfully authenticated from MailRu account.'
+    end
+
+    scenario 'with invalid credentials' do
+      OmniAuth.config.mock_auth[:mail_ru] = :invalid_credentials
+      click_on 'Sign in with MailRu'
+
+      expect(page).to have_content 'Could not authenticate you from MailRu because'
+    end
+  end
 
 end
