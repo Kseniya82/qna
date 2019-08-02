@@ -6,11 +6,20 @@ module OmniauthMacros
       info: { email: 'github@mail.net'}
     )
   end
+
   def mock_auth_mailru
     OmniAuth.config.mock_auth[:mail_ru] = OmniAuth::AuthHash.new(
       provider: 'mailru',
       uid: '123',
       info: { email: '123@mail.ru'}
+    )
+  end
+
+  def mock_auth_vkontakte
+    OmniAuth.config.mock_auth[:vkontakte] = OmniAuth::AuthHash.new(
+      provider: 'vkontakte',
+      uid: '123',
+      info: { email: nil }
     )
   end
 end

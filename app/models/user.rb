@@ -10,7 +10,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github, :mail_ru]
+         :confirmable,
+         :omniauthable, omniauth_providers: [:github, :mail_ru, :vkontakte]
 
 
   def self.find_for_oauth(auth)
@@ -23,5 +24,9 @@ class User < ApplicationRecord
 
   def author?(resource)
     resource.user_id == id
+  end
+
+  def confirmation_required?
+   false
   end
 end
