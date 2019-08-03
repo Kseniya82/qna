@@ -7,6 +7,8 @@ class OauthConfirmationsController < Devise::ConfirmationsController
     @user = User.new(email: @email, password: password, password_confirmation: password)
 
     if @user.valid?
+      @user.save!
+      auth
       @user.send_confirmation_instructions
     else
       flash.now[:alert] = 'please, enter valid email'
@@ -17,7 +19,7 @@ class OauthConfirmationsController < Devise::ConfirmationsController
   private
 
   def after_confirmation_path_for(resource_name, user)
-    @user.authorizations.create(provider: session[:provider], uid: session[:uid])
+    @user.create_authorization(auth)
     signed_in_root_path(@user)
   end
 
@@ -27,5 +29,12 @@ class OauthConfirmationsController < Devise::ConfirmationsController
 
   def resource
     @resource ||= User.new
+  end
+
+  def auth
+    @auth ||= {
+      provider: session['device.oauth_provider'],
+      uid: session['device.oauth_uid']
+    }
   end
 end

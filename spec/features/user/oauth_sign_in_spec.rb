@@ -41,19 +41,19 @@ feature 'User can sign in via OAuth providers:', %q{
   end
 
   context 'Vkontakte account' do
-    let! (:user) { create (:user)}
+    #let! (:user) { create (:user)}
     scenario 'with correct credentials' do
       mock_auth_vkontakte
       click_on 'Sign in with Vkontakte'
-      fill_in 'user_email', with: user.email
+      fill_in 'user_email', with: '1234@usser.com'
       click_on 'Resend confirmation instructions'
-      
-      expect(page).to have_content "Email confirmation instructions send to #{user.email}"
 
-      open_email(user.email)
+      expect(page).to have_content "Email confirmation instructions send to 1234@usser.com"
+
+      open_email('1234@usser.com')
       current_email.click_link 'Confirm my account'
 
-      expect(page).to have_content 'Successfully authenticated from Vkontakte account'
+      expect(page).to have_content 'Your email address has been successfully confirmed'
     end
 
     scenario 'with invalid credentials' do
