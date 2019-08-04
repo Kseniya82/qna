@@ -28,7 +28,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author?(@question)
+    if can? :destroy, @question
       @question.destroy
       redirect_to questions_path
     else
@@ -37,11 +37,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    unless current_user.author?(@question)
-      return redirect_to questions_path, alert: 'Access denided'
+    if can? :update, @question
+      @question.update(question_params)
+    else
+      redirect_to questions_path, alert: 'Access denided'
     end
-
-    @question.update(question_params)
   end
 
   private

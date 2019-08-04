@@ -12,29 +12,29 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    unless current_user.author?(@answer)
-      return redirect_to question_path(@answer.question), alert: 'Access denided'
+    if can? :destroy, @answer
+      @answer.destroy
+    else
+      redirect_to question_path(@answer.question), alert: 'Access denided'
     end
-
-    @answer.destroy
   end
 
   def update
-    unless current_user.author?(@answer)
-      return redirect_to question_path(@answer.question), alert: 'Access denided'
+    if can? :update, @answer
+      @answer.update(answer_params)
+      @question = @answer.question
+    else
+      redirect_to question_path(@answer.question), alert: 'Access denided'
     end
-
-    @answer.update(answer_params)
-    @question = @answer.question
   end
 
   def best
     @question = @answer.question
-    unless current_user.author?(@question)
-      return redirect_to question_path(@question), alert: 'Access denided'
+    if can? :best, @answer
+      @answer.best!
+    else
+      redirect_to question_path(@question), alert: 'Access denided'
     end
-
-    @answer.best!
   end
 
   private

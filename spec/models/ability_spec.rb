@@ -71,15 +71,31 @@ RSpec.describe Ability, type: :model do
       it { should be_able_to :vote_up, create(:answer) }
       it { should_not be_able_to :vote_down, create(:answer, user: user) }
       it { should be_able_to :vote_down, create(:answer) }
-      it { should be_able_to :vote_destoy, create(:vote, user: user, votable: create(:answer)) }
-      it { should_not be_able_to :vote_destroy, create(:vote, votable: create(:answer)) }
+
 
       it { should_not be_able_to :vote_up, create(:question, user: user) }
       it { should be_able_to :vote_up, create(:question) }
       it { should_not be_able_to :vote_down, create(:question, user: user) }
       it { should be_able_to :vote_down, create(:question) }
-      it { should be_able_to :vote_destoy, create(:vote, user: user, votable: create(:question)) }
-      it { should_not be_able_to :vote_destroy, create(:vote, votable: create(:question)) }
+
+    end
+
+    context 'vote destroy question' do
+      let!(:question) { create(:question) }
+      let!(:question2) { create(:question) }
+      let!(:user_vote) { create(:vote, user: user, votable: question) }
+      let!(:not_user_vote) { create(:vote, votable: question2) }
+      it { should be_able_to :vote_destroy, question }
+      it { should_not be_able_to :vote_destroy, question2 }
+    end
+
+    context 'vote destroy answer' do
+      let!(:answer) { create(:answer) }
+      let!(:answer2) { create(:answer) }
+      let!(:user_vote) { create(:vote, user: user, votable: answer) }
+      let!(:not_user_vote) { create(:vote, votable: answer2) }
+      it { should be_able_to :vote_destroy, answer }
+      it { should_not be_able_to :vote_destroy, answer2 }
     end
 
     context 'links' do

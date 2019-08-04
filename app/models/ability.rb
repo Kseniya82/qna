@@ -30,8 +30,10 @@ class Ability
       !user.author? item
     end
 
-    can :vote_desroy, Vote, user_id: user.id
-    can :create, Link, linkable: { user_id: user.id }
+    can :vote_destroy, [Question, Answer], votes: { user_id: user.id }
+
+    can [:create, :destroy], Link, linkable: { user_id: user.id }
+
     can :create, Award, question: { user_id: user.id  }
   end
 end
