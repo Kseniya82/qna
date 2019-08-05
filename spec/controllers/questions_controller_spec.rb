@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   it_behaves_like 'voted'
-  
+
   let(:user) { create(:user) }
   before { login(user) }
 
@@ -61,9 +61,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
 
-      it 'redirects to index' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -137,9 +137,9 @@ RSpec.describe QuestionsController, type: :controller do
         end.to_not change(question, :body)
       end
 
-      it 'redirects to index' do
+      it 'response have forbidden status' do
         patch :update, params: { id: question, question: { body: 'new body' } }, format: :js
-        expect(response).to redirect_to questions_path
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

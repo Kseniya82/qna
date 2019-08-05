@@ -33,6 +33,7 @@ feature 'User can add links to answer', %q{
 
       click_on 'Add answer'
     end
+    wait_for_ajax
     within '.answers' do
       expect(page).to have_content 'test.txt'
       expect(page).to have_link 'google', href: google_url

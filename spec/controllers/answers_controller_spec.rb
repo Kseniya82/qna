@@ -58,9 +58,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirects to question show' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(answer.question)
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -100,9 +100,9 @@ RSpec.describe AnswersController, type: :controller do
           patch :update, params: { id: answer }, format: :js
         end.to_not change(answer, :body)
       end
-      it 'redirects to question show' do
+      it 'redirects to root path' do
         patch :update, params: { id: answer, answer: { body: 'new body' } }
-        expect(response).to redirect_to question_path(question)
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -128,6 +128,10 @@ RSpec.describe AnswersController, type: :controller do
         patch :best, params: { id: other_answer }, format: :js
         answer.reload
         expect(answer.best).to be_falsey
+      end
+      it 'response have forbidden status' do
+        patch :best, params: { id: other_answer }, format: :js
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
