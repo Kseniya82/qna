@@ -3,16 +3,16 @@ div id= "answer-#{answer.id}"
     p= answer.body
     . class="answer-#{answer.id}"
       .vote
-        - if user_signed_in?
-          = render partial: 'shared/vote', locals: { resource: answer }
+        = render partial: 'shared/vote', locals: { resource: answer }
 
     = render 'shared/links', resource: answer
 
-    - if current_user&.author?(answer)
+    - if can? :update, answer
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    - if can? :destroy, answer
       = link_to 'Delete answer',answer, method: :delete, remote: true
     br
-    - if current_user&.author?(answer.question)
+    - if can? :best, answer
       =link_to 'Mark as best', best_answer_path(answer), remote: true, class: 'mark-as-best', data: { answer_id: answer.id }, method: :patch
 
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
@@ -30,7 +30,7 @@ div id= "answer-#{answer.id}"
     - answer.files.each do |file|
       div id=file.id class='file'
         p= link_to file.filename.to_s, url_for(file)
-        - if current_user&.author?(answer)
+        - if can? :destroy, file
           =link_to 'Delete file',
                        file_path(file),
                        method: :delete,

@@ -25,7 +25,8 @@ module Voted
   end
 
   def vote_destroy
-    @vote.destroy if current_user.author?(@vote)
+    authorize! :vote_destroy, @votable
+    @vote.destroy
     render_rating
   end
 

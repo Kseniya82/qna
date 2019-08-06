@@ -28,9 +28,9 @@ before { login(user) }
           .to_not change(answer.files, :count)
       end
 
-      it 'redirects to root_path' do
+      it 'response have forbidden status' do
         delete :destroy, params: { id: answer.files.first }, format: :js
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

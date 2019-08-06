@@ -5,6 +5,8 @@ class QuestionsController < ApplicationController
   before_action :set_question, only: %i[show update destroy]
   after_action :publish_question, only: %i[create]
 
+  authorize_resource
+
   def new
     @question = current_user.questions.new
     @question.build_award
@@ -28,19 +30,11 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author?(@question)
-      @question.destroy
-      redirect_to questions_path
-    else
-      redirect_to questions_path, alert: 'Access denided'
-    end
+    @question.destroy
+    redirect_to questions_path
   end
 
   def update
-    unless current_user.author?(@question)
-      return redirect_to questions_path, alert: 'Access denided'
-    end
-
     @question.update(question_params)
   end
 

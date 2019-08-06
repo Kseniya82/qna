@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: %i[update destroy best]
   after_action :publish_answer, only: :create
 
+  authorize_resource
+
   def create
     @answer = question.answers.new(answer_params)
     @answer.user = current_user
@@ -12,29 +14,17 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    unless current_user.author?(@answer)
-      return redirect_to question_path(@answer.question), alert: 'Access denided'
-    end
-
     @answer.destroy
   end
 
   def update
-    unless current_user.author?(@answer)
-      return redirect_to question_path(@answer.question), alert: 'Access denided'
-    end
-
     @answer.update(answer_params)
     @question = @answer.question
   end
 
   def best
-    @question = @answer.question
-    unless current_user.author?(@question)
-      return redirect_to question_path(@question), alert: 'Access denided'
-    end
-
     @answer.best!
+    @question = @answer.question
   end
 
   private

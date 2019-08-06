@@ -4,7 +4,7 @@
          'Comments:
        = render resource.comments
   .new-comment
-    - if user_signed_in?
+    - if can? :create, Comment
       = form_with model: [resource, Comment.new] do |f|
         = f.label :body
         = f.text_area :body

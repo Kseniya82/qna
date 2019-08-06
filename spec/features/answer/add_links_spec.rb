@@ -18,20 +18,22 @@ feature 'User can add links to answer', %q{
     visit question_path(question)
   end
   scenario 'User adds links when add answer', js: true do
+    within '.new-answer' do
+      fill_in 'Your answer', with: 'My answer'
 
-    fill_in 'Your answer', with: 'My answer'
+      click_on 'add link'
 
-    click_on 'add link'
+      fill_in 'Link name', with: 'My gist'
+      fill_in 'Url', with: gist_url
 
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+      click_on 'add link'
 
-    click_on 'add link'
+      fill_in  'Link name', with: 'google', currently_with: ''
+      fill_in 'Url', with: google_url, currently_with: ''
 
-    fill_in  'Link name', with: 'google', currently_with: ''
-    fill_in 'Url', with: google_url, currently_with: ''
-
-    click_on 'Add answer'
+      click_on 'Add answer'
+    end
+    wait_for_ajax
     within '.answers' do
       expect(page).to have_content 'test.txt'
       expect(page).to have_link 'google', href: google_url
