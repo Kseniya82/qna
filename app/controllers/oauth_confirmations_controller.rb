@@ -1,10 +1,6 @@
 class OauthConfirmationsController < Devise::ConfirmationsController
   def show
-    byebug
-    # super { |user| byebug; sign_in user }
-    byebug
-    user2  =  User.confirm_by_token(params[:confirmation_token])
-
+    super { |user| byebug; sign_in user }
   end
 
   def create
@@ -25,11 +21,11 @@ class OauthConfirmationsController < Devise::ConfirmationsController
 
   private
 
-  # def after_confirmation_path_for(resource_name, user)
-  #   user  =  User.confirm_by_token(params[:confirmation_token])
-  #   sign_in resource, event: :authentication
-  #   root_path
-  # end
+  def after_confirmation_path_for(resource_name, user)
+    #user  =  User.confirm_by_token(params[:confirmation_token])
+    sign_in resource, event: :authentication
+    root_path
+  end
   def oauth_confirmation_params
     params.require(:user).permit(:email)
   end
