@@ -7,6 +7,16 @@ Rails.application.routes.draw do
   }
   root to: 'questions#index'
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only:[] do
+        get :me, on: :collection
+      end
+
+    end
+  end
+
+
   concern :votable do
     member do
       post :vote_up

@@ -1,5 +1,11 @@
 class OauthConfirmationsController < Devise::ConfirmationsController
-  def new;  end
+  def show
+    byebug
+    # super { |user| byebug; sign_in user }
+    byebug
+    user2  =  User.confirm_by_token(params[:confirmation_token])
+
+  end
 
   def create
     @email = oauth_confirmation_params[:email]
@@ -8,8 +14,9 @@ class OauthConfirmationsController < Devise::ConfirmationsController
 
     if @user.valid?
       @user.save!
-      auth
+      @user.create_authorization(auth)
       @user.send_confirmation_instructions
+      self.resource = @user
     else
       flash.now[:alert] = 'please, enter valid email'
       render :new
@@ -18,23 +25,23 @@ class OauthConfirmationsController < Devise::ConfirmationsController
 
   private
 
-  def after_confirmation_path_for(resource_name, user)
-    @user.create_authorization(auth)
-    signed_in_root_path(@user)
-  end
-
+  # def after_confirmation_path_for(resource_name, user)
+  #   user  =  User.confirm_by_token(params[:confirmation_token])
+  #   sign_in resource, event: :authentication
+  #   root_path
+  # end
   def oauth_confirmation_params
     params.require(:user).permit(:email)
   end
 
-  def resource
-    @resource ||= User.new
-  end
+  # def resource
+  #   @resource ||= User.new
+  # end
 
   def auth
     @auth ||= {
-      provider: session['device.oauth_provider'],
-      uid: session['device.oauth_uid']
+      provider: session['devise.oauth_provider'],
+      uid: session['devise.oauth_uid']
     }
   end
 end
