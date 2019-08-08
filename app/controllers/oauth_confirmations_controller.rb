@@ -1,6 +1,6 @@
 class OauthConfirmationsController < Devise::ConfirmationsController
   def show
-    super { |user| byebug; sign_in user }
+    super { |user| sign_in user }
   end
 
   def create
