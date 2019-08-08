@@ -50,16 +50,13 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-mail_ru'
 gem 'omniauth-vkontakte'
-<<<<<<< HEAD
 #gem "omniauth-rails_csrf_protection"
-=======
-gem "omniauth-rails_csrf_protection"
->>>>>>> 3b8effff5e19ecc71735577342fa45b36c779cd1
 
 gem 'cancancan'
 
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
+# gem 'oj'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
