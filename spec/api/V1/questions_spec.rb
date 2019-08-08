@@ -15,12 +15,12 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
-      let(:question_response) { json['questions'].first }
+      let(:question_response) { json.first }
 
       before {get api_path, params: {access_token: access_token.token}, headers: headers}
 
       it 'returns list of questions' do
-        expect(json['questions'].size).to eq 2
+        expect(json.size).to eq 2
       end
 
       it 'returns all public fields' do
