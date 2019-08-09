@@ -36,7 +36,6 @@ describe 'Questions API', type: :request do
     let!(:question) { create(:question) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
 
-
     it_behaves_like 'API Authorizable' do
       let(:method) { :get }
     end
@@ -62,7 +61,6 @@ describe 'Questions API', type: :request do
       describe 'comments' do
         let(:comment_response) { question_response['comments'].first }
         let(:comment) { Comment.where(id: comment_response['id']).first }
-
 
         it 'returns list of comments' do
           expect(question_response['comments'].size).to eq 3
@@ -91,7 +89,6 @@ describe 'Questions API', type: :request do
       describe 'links' do
         let(:link_response) { question_response['links'].first }
         let(:link) { Link.where(id: link_response['id']).first }
-
 
         it 'returns list of links' do
           expect(question_response['links'].size).to eq 2
