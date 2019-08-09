@@ -1,3 +1,3 @@
-class QuestionsSerializer < ActiveModel::CollectionSerializer
+class QuestionCollectionSerializer < ActiveModel::Serializer
   attributes :id, :body, :title, :created_at, :updated_at, :user_id
 end
