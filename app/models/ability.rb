@@ -35,5 +35,7 @@ class Ability
     can [:create, :destroy], Link, linkable: { user_id: user.id }
 
     can :create, Award, question: { user_id: user.id  }
+
+    can :me, User, user_id: user.id
   end
 end
