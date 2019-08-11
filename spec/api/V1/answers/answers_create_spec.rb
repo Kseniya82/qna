@@ -1,15 +1,16 @@
 require 'rails_helper'
 
-describe 'Questions API', type: :request do
+describe 'answers API', type: :request do
   let(:headers) { { "ACCEPT" => 'application/json' } }
 
   let(:me) { create(:user) }
   let(:access_token) { create(:access_token, resource_owner_id: me.id) }
-  let(:request_params) { { access_token: access_token.token, body: 'question', title: 'Test question' } }
+  let(:request_params) { { access_token: access_token.token, body: 'answer' } }
+  let!(:question) { create(:question) }
 
-  describe 'POST /api/v1/questions/' do
+  describe 'POST /api/v1/questions/:question_id/answers/' do
 
-    let(:api_path) { "/api/v1/questions/" }
+    let(:api_path) { "/api/v1//questions/#{question.id}/answers/" }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :post }
@@ -20,29 +21,29 @@ describe 'Questions API', type: :request do
         before do
           post api_path, params: request_params, headers: headers
         end
-        let(:question_response) { json['question'] }
+        let(:answer_response) { json['answer'] }
 
-        it 'save a new question in database' do
-          expect(Question.count).to eq 1
+        it 'save a new answer in database' do
+          expect(Answer.count).to eq 1
         end
         it 'returns all public fields' do
-          %w[title body].each do |attr|
-            expect(question_response[attr]).to eq request_params[attr.to_sym]
+          %w[body].each do |attr|
+            expect(answer_response[attr]).to eq request_params[attr.to_sym]
           end
         end
-        it 'return me as author question' do
-          expect(question_response['user_id']).to eq me.id
+        it 'return me as author answer' do
+          expect(answer_response['user_id']).to eq me.id
         end
       end
 
       context 'user add invalid params' do
-        let(:request_params) { { access_token: access_token.token, body: nil, title: nil} }
+        let(:request_params) { { access_token: access_token.token, body: nil } }
 
         before do
           post api_path, params: request_params, headers: headers
         end
-        it 'does not saves a new question in the database' do
-          expect(Question.count).to eq 0
+        it 'does not saves a new answer in the database' do
+          expect(Answer.count).to eq 0
         end
 
         it 'returns :unprocessable_entity status' do

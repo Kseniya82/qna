@@ -10,13 +10,37 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     @question = Question.find(params[:id])
     render json: @question
   end
+
   def create
-    @question = current_resource_owner.questions.create!(question_params)
-    render json: @question
+    @question = current_resource_owner.questions.new(question_params)
+    if @question.save
+      render json: @question
+    else
+      render json: { errors: @question.errors }, status: :unprocessable_entity
+    end
   end
 
+  def update
+    @question = Question.find(params[:id])
+    authorize! :update, @question
+    if @question.update(question_params)
+      render json: @question
+    else
+      render json: { errors: @question.errors }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @question = Question.find(params[:id])
+    authorize! :destroy, @question
+    @question.destroy!
+    render json: {}, status: :ok
+  end
+
+  private
+
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.permit(:title, :body)
   end
 
 end

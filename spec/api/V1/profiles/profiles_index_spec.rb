@@ -4,7 +4,7 @@ describe 'Profiles API', type: :request do
                 "ACCEPT" => 'application/json' } }
 
   let(:me) { create(:user) }
-  let(:access_token) { create("access_token", resource_owner_id: me.id) }
+  let(:access_token) { create(:access_token, resource_owner_id: me.id) }
   let(:request_params) { { access_token: access_token.token } }
 
   describe 'GET api/v1/profiles' do
