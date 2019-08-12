@@ -9,37 +9,22 @@ describe 'Answers API', type: :request do
   let!(:answer) { create(:answer, user: me) }
 
   describe 'DELETE /api/v1/answers/:id' do
-
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
+    let(:method) { :delete }
 
-    it_behaves_like 'API Authorizable' do
-      let(:method) { :delete }
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
-      before do
-        delete api_path, params: request_params, headers: headers
-      end
-      # let(:answer_response) { json['answer'] }
-
-      it 'return empty response body' do
-        expect(response.body).to eq '{}'
-      end
-
-      it 'does delete a answer from the database' do
-        expect(Answer.count).to eq 0
+      it_behaves_like 'delete resource' do
+        let(:resource) { Answer }
       end
     end
 
     context 'user not author' do
-      let(:user) { create(:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-      let(:request_params) { { access_token: access_token.token } }
-      before do
-        delete api_path, params: request_params, headers: headers
-      end
-      it 'user mot autorize for destroy' do
-        expect(response.body).to eq "You are not authorized to access this page."
+      it_behaves_like 'not authorized user' do
+        let(:user) { create(:user) }
+        let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+        let(:request_params) { { access_token: access_token.token } }
       end
     end
   end

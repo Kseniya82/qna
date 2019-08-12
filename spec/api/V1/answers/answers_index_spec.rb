@@ -17,19 +17,14 @@ describe 'answers API', type: :request do
 
     context 'authorized' do
       let!(:answers) { create_list(:answer, 2, question: question) }
-      let(:answer) { answers.first }
-      let(:answer_response) { json['answers'].first }
+      it_behaves_like 'return list resource with public fields' do
+        before { get api_path, params: request_params, headers: headers }
 
-      before {get api_path, params: request_params, headers: headers}
-
-      it 'returns list of answers' do
-        expect(json['answers'].size).to eq 2
-      end
-
-      it 'returns all public fields' do
-        %w[id body created_at updated_at user_id].each do |attr|
-          expect(answer_response[attr]).to eq answer.send(attr).as_json
-        end
+        let(:list_resource_response) { json['answers'] }
+        let(:resource_response) { json['answers'].first }
+        let(:fields) { %w[id body created_at updated_at user_id] }
+        let(:resource_count) { 2 }
+        let(:resource) { answers.first }
       end
     end
   end

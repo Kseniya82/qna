@@ -15,16 +15,18 @@ describe 'Profiles API', type: :request do
     end
   #
     context 'authorized' do
-      let!(:users) { create_list(:user ,2) }
-      let(:user) { users.first}
+      let!(:users) { create_list(:user, 2) }
+      let(:user) { users.first }
       let(:user_response) { json['users'].first }
 
       before { get api_path, params: request_params ,headers: headers }
+      it_behaves_like 'return list resource with public fields' do
 
-      it 'return all public fields' do
-        %w[id admin email created_at updated_at].each do |attr|
-          expect(user_response[attr]).to eq user.send(attr).as_json
-        end
+        let(:list_resource_response) { json['users'] }
+        let(:resource_response) { user_response }
+        let(:fields) { %w[id admin email created_at updated_at] }
+        let(:resource_count) { 2 }
+        let(:resource) { user }
       end
 
       it 'does not return private fields' do

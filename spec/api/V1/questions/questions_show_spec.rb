@@ -27,24 +27,19 @@ describe 'Questions API', type: :request do
 
       before { get api_path, params: request_params, headers: headers }
 
-      it 'returns all public fields' do
-        %w[id title body created_at updated_at user_id].each do |attr|
-          expect(question_response[attr]).to eq question.send(attr).as_json
-        end
+      it_behaves_like 'return resource with public fields' do
+        let(:resource_response) { question_response }
+        let(:fields) { %w[id title body created_at updated_at user_id] }
+        let(:resource) { question }
       end
 
       describe 'comments' do
-        let(:comment_response) { question_response['comments'].first }
-        let(:comment) { Comment.where(id: comment_response['id']).first }
-
-        it 'returns list of comments' do
-          expect(question_response['comments'].size).to eq 3
-        end
-
-        it 'returns all public fields' do
-          %w[id body user_id created_at updated_at].each do |attr|
-            expect(comment_response[attr]).to eq comment.send(attr).as_json
-          end
+        it_behaves_like 'return list resource with public fields' do
+          let(:list_resource_response) { question_response['comments'] }
+          let(:resource_response) { question_response['comments'].first }
+          let(:resource) { Comment.where(id: resource_response['id']).first }
+          let(:resource_count) { 3 }
+          let(:fields) { %w[id body user_id created_at updated_at] }
         end
       end
 
@@ -62,17 +57,12 @@ describe 'Questions API', type: :request do
       end
 
       describe 'links' do
-        let(:link_response) { question_response['links'].first }
-        let(:link) { Link.where(id: link_response['id']).first }
-
-        it 'returns list of links' do
-          expect(question_response['links'].size).to eq 2
-        end
-
-        it 'returns all public fields' do
-          %w[id name url].each do |attr|
-            expect(link_response[attr]).to eq link.send(attr).as_json
-          end
+        it_behaves_like 'return list resource with public fields' do
+          let(:list_resource_response) { question_response['links'] }
+          let(:resource_response) { question_response['links'].first }
+          let(:resource) { Link.where(id: resource_response['id']).first }
+          let(:resource_count) { 2 }
+          let(:fields) { %w[id name url] }
         end
       end
     end

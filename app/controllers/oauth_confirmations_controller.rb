@@ -8,8 +8,7 @@ class OauthConfirmationsController < Devise::ConfirmationsController
     password = Devise.friendly_token[0, 20]
     @user = User.new(email: @email, password: password, password_confirmation: password)
 
-    if @user.valid?
-      @user.save!
+    if @user.save
       @user.create_authorization(auth)
       @user.send_confirmation_instructions
       self.resource = @user

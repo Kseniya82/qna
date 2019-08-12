@@ -10,10 +10,18 @@ shared_examples_for 'API Authorizable' do
       expect(response.status).to eq 401
     end
   end
+
   context 'authorized' do
     it 'return 200 status' do
       do_request(method, api_path, params: request_params ,headers: headers)
       expect(response).to be_successful
     end
+  end
+end
+
+shared_examples_for 'not authorized user' do
+  it 'user mot autorize for destroy' do
+    do_request(method, api_path, params: request_params, headers: headers)
+    expect(response.body).to eq "You are not authorized to access this page."
   end
 end

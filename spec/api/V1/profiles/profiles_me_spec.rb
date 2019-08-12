@@ -16,11 +16,12 @@ describe 'Profiles API', type: :request do
     context 'authorized' do
       before { get api_path, params: request_params ,headers: headers }
 
-      it 'return all public fields' do
-        %w[id admin email created_at updated_at].each do |attr|
-          expect(json['user'][attr]).to eq me.send(attr).as_json
-        end
+      it_behaves_like 'return resource with public fields' do
+        let(:resource_response) { json['user'] }
+        let(:resource) { me }
+        let(:fields) { %w[id admin email created_at updated_at] }
       end
+
       it 'does not return private fields' do
         %w[password encrypted_password].each do |attr|
           expect(json['user']).to_not have_key(attr)

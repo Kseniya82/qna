@@ -1,5 +1,7 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
   authorize_resource class: Question
+  before_action :set_question, only: %i[show update destroy]
+  after_action :publish_question, only: :create
 
   def index
     @questions = Question.all
@@ -7,7 +9,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    @question = Question.find(params[:id])
     render json: @question
   end
 
@@ -21,7 +22,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
-    @question = Question.find(params[:id])
     authorize! :update, @question
     if @question.update(question_params)
       render json: @question
@@ -31,7 +31,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    @question = Question.find(params[:id])
     authorize! :destroy, @question
     @question.destroy!
     render json: {}, status: :ok
@@ -39,8 +38,23 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   private
 
+  def set_question
+    @question = Question.find(params[:id])
+  end
+
   def question_params
     params.permit(:title, :body)
   end
 
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: @question }
+      )
+    )
+  end
 end
