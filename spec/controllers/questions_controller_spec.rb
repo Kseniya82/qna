@@ -43,11 +43,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  # it_behaves_like 'DELETE #destroy', :destroy do
-  #   let!(:resource) { create(:question) }
-  #   let!(:own_resource) { create(:question, user: user) }
-  #   let(:klass_resource) { Question }
-  # end
 
   describe 'DELETE #destroy' do
     let!(:question) { create(:question) }
