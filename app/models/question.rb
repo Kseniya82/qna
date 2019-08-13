@@ -14,5 +14,4 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :award, reject_if: :all_blank
 
   validates :body, :title, presence: true
-
 end
