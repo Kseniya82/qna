@@ -1,8 +1,4 @@
-h1=
-  'Hi
-  = user
-h2
-  'There are new question created today
--  @question.each |question| do
-li
-  ul= link_to question.title, question_url
+h1 List of new questions for today from QNA
+ul
+  - @questions.each do |question|
+    li= link_to question.title, url_for(question)
