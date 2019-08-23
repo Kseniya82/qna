@@ -28,7 +28,6 @@ class Answer < ApplicationRecord
   private
 
   def sent_notification
-    NewAnswerJob.perform_later(self)
     SubscriptionJob.perform_later(self)
   end
 end

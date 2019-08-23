@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -27,6 +29,10 @@ class User < ApplicationRecord
   end
 
   def confirmation_required?
-   false
+    false
+  end
+
+  def subscribed_to?(resource)
+    subscriptions.find_by(question_id: resource.id).present?
   end
 end
