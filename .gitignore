@@ -27,4 +27,11 @@
 /config/master.key
 /config/database.yml
 
-.DS_Store
+# Ignore redis binary dump (dump.rdb) files
+*.rdb
+
+# sphinx
+config/*.sphinx.conf
+db/sphinx
+
+*/.DS_Store
