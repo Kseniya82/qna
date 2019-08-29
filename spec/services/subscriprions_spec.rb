@@ -9,7 +9,7 @@ RSpec.describe Services::Subscription do
   let(:not_subscribe_user) { create(:user) }
 
   it 'sends subscriptions to users subscribe' do
-    users.reverse.each do |user|
+    users.each do |user|
       expect(SubscriptionMailer).to receive(:notification).with(user, answer).and_call_original
     end
     subject.call(answer)
