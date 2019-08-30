@@ -1,0 +1,11 @@
+= form_with url: search_path,
+                 method: :get,
+                 local: true do |f|
+
+  = f.label :query
+  = f.text_area :query
+
+  = f.label :scope
+  = f.select :scope, Services::Search::ALLOW_SCOPES
+
+  = f.submit 'Search'

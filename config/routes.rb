@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   resources :links, only: :destroy
   resources :awards, only: :index
 
+  get :search, to: 'search#results'
+
   mount ActionCable.server => '/cable'
 
 end
