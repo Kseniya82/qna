@@ -1,0 +1,5 @@
+p= resource.body
+- if resource.commentable.class == Answer
+  = link_to 'Question link', question_path(resource.commentable.question)
+- else
+  = link_to 'Question link', question_path(resource.commentable)

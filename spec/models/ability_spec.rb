@@ -10,6 +10,11 @@ RSpec.describe Ability, type: :model do
     it { should be_able_to :read, Answer }
     it { should be_able_to :read, Comment }
 
+    it { should be_able_to :search, Question }
+    it { should be_able_to :search, Answer }
+    it { should be_able_to :search, Comment }
+    it { should be_able_to :search, User }
+
     it { should_not be_able_to :manage, :all }
   end
 
