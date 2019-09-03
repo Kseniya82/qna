@@ -1,0 +1,28 @@
+require 'rails_helper'
+
+RSpec.describe SearchController, type: :controller do
+  describe 'GET #results' do
+    let!(:questions) { create_list(:question, 3) }
+    let!(:service) { Services::Search.new }
+    context 'with valid attributes' do
+      Services::Search::ALLOW_SCOPES.each do |scope|
+        before do
+          allow(service).to receive(:call).and_return(questions)
+          get :results, params: { query: questions.sample.title, scope: scope }
+        end
+
+        it "#{scope} return OK" do
+          expect(response).to be_successful
+        end
+
+        it "renders #{scope} results view" do
+          expect(response).to render_template :results
+        end
+
+        it "#{scope} assign Services::Search.new.call to @results" do
+          expect(assigns(:results)).to eq questions
+        end
+      end
+    end
+  end
+end
