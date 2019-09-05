@@ -6,8 +6,8 @@ feature 'user can search global or in areas', %q{
   Questions, Answers, Comments, Users
 } do
 
-  given!(:questions) { create_list :question, 5 }
-  given!(:question) { questions.first }
+  given!(:questions) { create_list :question, 3 }
+  given!(:question) { create(:question) }
 
   describe 'Searching for the', js: true, sphinx: true do
     before { visit root_path }

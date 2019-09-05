@@ -7,7 +7,8 @@ RSpec.describe SearchController, type: :controller do
     context 'with valid attributes' do
       Services::Search::ALLOW_SCOPES.each do |scope|
         before do
-          allow(service).to receive(:call).and_return(questions)
+          allow(Services::Search).to receive(:new).and_return(service)
+          expect(service).to receive(:call).and_return(questions)
           get :results, params: { query: questions.sample.title, scope: scope }
         end
 
