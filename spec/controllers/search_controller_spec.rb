@@ -25,5 +25,14 @@ RSpec.describe SearchController, type: :controller do
         end
       end
     end
+
+    context 'with invalid params' do
+      before do
+        get :results, params: { query: questions.sample.title, scope: 'file' }
+      end
+      it 'return status 400' do
+        expect(response.status).to eq 400
+      end
+    end
   end
 end
