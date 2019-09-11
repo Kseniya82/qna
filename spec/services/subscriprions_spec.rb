@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Services::Subscription do
+RSpec.describe Services::NewAnswer do
   let!(:users) { create_list(:user, 3) }
   let!(:question) { create(:question, user: users[2]) }
   let!(:answer) { create(:answer, question: question) }
