@@ -5,7 +5,11 @@
   = f.label :query
   = f.text_area :query
 
-  = f.label :scope
-  = f.select :scope, Services::Search::ALLOW_SCOPES
+  = f.select(:scope,
+               [['All', 'thinking_sphinx'],
+                ['Question', 'question'],
+                ['Answer', 'answer'],
+                ['Comment', 'comment'],
+                ['User', 'user']])
 
   = f.submit 'Search'
