@@ -19,6 +19,6 @@ p= @question.body
 
 - if can?(:create, Subscription)
   = render 'subscriptions/subscription_block', resource: @question
-  
+
 .question-comments
   = render 'comments/comments_block', resource: @question
